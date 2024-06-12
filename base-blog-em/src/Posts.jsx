@@ -10,12 +10,16 @@ export function Posts() {
   const [selectedPost, setSelectedPost] = useState(null);
 
   // 5. Creating Queries with useQuery
-  const { data } = useQuery({
+  const { data, isError, error, isLoading } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
   });
-  if (!data) {
-    return <div>No data loaded</div>;
+  // 6. Handling Loading and Error States
+  if (isLoading) {
+    return <h3>Loading...</h3>;
+  }
+  if (isError) {
+    return <h3>Oops, something some wrong, {error.toString()}</h3>;
   }
 
   return (
