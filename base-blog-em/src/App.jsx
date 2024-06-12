@@ -1,13 +1,21 @@
 import { Posts } from "./Posts";
 import "./App.css";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/eslint-plugin-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    // provide React Query client to App
-    <div className="App">
-      <h1>Blog &apos;em Ipsum</h1>
-      <Posts />
-    </div>
+    //4. Adding a Query Client and Provider
+    <QueryClientProvider client={queryClient}>
+      <div className="App">
+        <h1>Blog &apos;em Ipsum</h1>
+        <Posts />
+      </div>
+    </QueryClientProvider>
   );
 }
 
