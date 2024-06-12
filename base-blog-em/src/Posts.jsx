@@ -13,6 +13,7 @@ export function Posts() {
   const { data, isError, error, isLoading } = useQuery({
     queryKey: ["posts"],
     queryFn: fetchPosts,
+    staleTime: 2000,
   });
   // 6. Handling Loading and Error States
   if (isLoading) {
