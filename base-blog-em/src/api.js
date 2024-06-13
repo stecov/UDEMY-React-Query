@@ -13,6 +13,7 @@ export async function fetchComments(postId) {
 }
 
 export async function deletePost(postId) {
+  console.log("deletePost", postId);
   const response = await fetch(
     `https://jsonplaceholder.typicode.com/posts/${postId}`,
     { method: "DELETE" }
