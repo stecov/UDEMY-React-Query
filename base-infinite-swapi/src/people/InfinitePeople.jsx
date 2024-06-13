@@ -10,12 +10,35 @@ const fetchUrl = async (url) => {
 
 export function InfinitePeople() {
   // 25. Write useInfiniteQuery Call
-  const { data, fetchNextPage, hasNextPage } = useInfiniteQuery({
+  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
     queryKey: ["sw-people"],
     queryFn: ({ pageParam = initialUrl }) => fetchUrl(pageParam),
     getNextPageParam: (lastPage) => {
       return lastPage.next || undefined; // fourni par swpai
     },
   });
-  return <InfiniteScroll />;
+  return (
+    // 26. InfiniteScroll Component
+    <InfiniteScroll
+      loadMore={() => {
+        if (!isFetching) {
+          fetchNextPage();
+        }
+      }}
+      hasMore={hasNextPage}
+    >
+      {data.pages.map((pageData) => {
+        return pageData.results.map((person) => {
+          return (
+            <Person
+              key={person.name}
+              name={person.name}
+              hairColor={person.hair_color}
+              eyeColor={person.eye_color}
+            />
+          );
+        });
+      })}
+    </InfiniteScroll>
+  );
 }
