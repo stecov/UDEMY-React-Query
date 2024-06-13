@@ -20,6 +20,7 @@ export function InfinitePeople() {
   return (
     // 26. InfiniteScroll Component
     <InfiniteScroll
+      initialLoad={false}
       loadMore={() => {
         if (!isFetching) {
           fetchNextPage();
