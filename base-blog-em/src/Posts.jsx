@@ -26,7 +26,7 @@ export function Posts() {
     mutationFn: (postId) => deletePost(postId),
   });
 
-  // 16. Update Post with useMutation
+  // 18. Update Post with useMutation
   const updateMutation = useMutation({
     mutationFn: (postId) => updatePost(postId),
   });
