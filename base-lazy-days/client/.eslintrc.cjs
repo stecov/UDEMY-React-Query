@@ -20,7 +20,7 @@ module.exports = {
     "plugin:jsx-a11y/recommended",
     "plugin:vitest/recommended",
     "plugin:testing-library/react",
-    // "plugin:@tanstack/eslint-plugin-query/recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
   ],
   ignorePatterns: ["dist", ".eslintrc.cjs"],
   parser: "@typescript-eslint/parser",
