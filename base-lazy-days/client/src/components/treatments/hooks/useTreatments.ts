@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type { Treatment } from "@shared/types";
 
@@ -19,4 +19,14 @@ export function useTreatments(): Treatment[] {
     queryFn: getTreatments
   })
   return data;
+}
+
+
+// 46. Pre-Fetching Treatments 
+export function usePrefetchTreatments(): void {
+  const queryClient = useQueryClient();
+  queryClient.prefetchQuery({
+    queryKey: [queryKeys.treatments],
+    queryFn: getTreatments,
+  })
 }
