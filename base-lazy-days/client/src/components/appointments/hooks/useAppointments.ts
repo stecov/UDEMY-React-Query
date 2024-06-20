@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query"
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { AppointmentDateMap } from "../types";
 import { getAvailableAppointments } from "../utils";
@@ -42,17 +42,20 @@ export function useAppointments() {
     setMonthYear((prevData) => getNewMonthYear(prevData, monthIncrement));
   }
   /** ****************** END 1: monthYear state ************************* */
-  /** ****************** START 2: filter appointments  ****************** */
+
+
+
+  // 52. Filtering Data with the useQuery select Option
   // State and functions for filtering appointments to show all or only available
   const [showAll, setShowAll] = useState(false);
-
   // We will need imported function getAvailableAppointments here
-  // We need the user to pass to getAvailableAppointments so we can show
-  //   appointments that the logged-in user has reserved (in white)
+  // We need the user to pass to getAvailableAppointments so we can show appointments that the logged-in user has reserved (in white)
   const { userId } = useLoginData();
+  const selectFn = useCallback((data: AppointmentDateMap, showAll: boolean) => {
+    if (showAll) return data;
+    return getAvailableAppointments(data, userId)
 
-  /** ****************** END 2: filter appointments  ******************** */
-
+  }, [userId])
 
   // 48. useQuery for useAppointments
   //  1. appointments is an AppointmentDateMap (empty by default)
@@ -61,7 +64,8 @@ export function useAppointments() {
   const { data: appointments = fallback } = useQuery({
     queryKey: [queryKeys.appointments, monthYear.year, monthYear.month],
     queryFn: () => getAppointments(monthYear.year, monthYear.month),
-  })
+    select: (data) => selectFn(data, showAll)
+  });
 
   return { appointments, monthYear, updateMonthYear, showAll, setShowAll };
 }
