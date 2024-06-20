@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState, Dispatch, SetStateAction } from "react";
+import { useCallback, useState } from "react";
 
 import type { Staff } from "@shared/types";
 
@@ -8,7 +8,7 @@ import { filterByTreatment } from "../utils";
 import { axiosInstance } from "@/axiosInstance";
 import { queryKeys } from "@/react-query/constants";
 
-// query function for useQuery
+// 53. Code Quiz! Selector for useStaff
 async function getStaff(): Promise<Staff[]> {
   const { data } = await axiosInstance.get('/staff');
   return data;
@@ -17,12 +17,19 @@ async function getStaff(): Promise<Staff[]> {
 export function useStaff() {
   // for filtering staff by treatment
   const [filter, setFilter] = useState("all");
-  const fallback: Staff[] = [];
+  const selectFn = useCallback(
+    (unfilteredStaff: Staff[]) => {
+      if (filter === 'all') return unfilteredStaff;
+      return filterByTreatment(unfilteredStaff, filter)
+    }, [filter]
+  )
 
   // get data from server via useQuery
+  const fallback: Staff[] = []
   const { data: staff = fallback } = useQuery({
     queryKey: [queryKeys.staff],
     queryFn: getStaff,
+    select: selectFn
   })
 
 
