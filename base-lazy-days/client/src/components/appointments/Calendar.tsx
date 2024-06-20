@@ -53,7 +53,7 @@ export function Calendar() {
         {/* first day needs a grid column */}
         <DateBox
           date={1}
-          gridColumn={monthYear.firstDOW + 1}
+          gridColumn={monthYear.firstDOW}
           appointments={appointments[1]}
         />
         {/* the rest of the days will follow */}
