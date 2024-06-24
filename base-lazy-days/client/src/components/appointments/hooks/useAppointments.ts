@@ -10,6 +10,12 @@ import { useLoginData } from "@/auth/AuthContext";
 import { axiosInstance } from "@/axiosInstance";
 import { queryKeys } from "@/react-query/constants";
 
+// 57. CommonQueryOPtions
+const comonQueryOptions = {
+  staleTime: 0, // 0
+  gcTime: 300000, // 5 min
+}
+
 // for useQuery call
 async function getAppointments(
   year: string,
@@ -64,7 +70,9 @@ export function useAppointments() {
   const { data: appointments = fallback } = useQuery({
     queryKey: [queryKeys.appointments, monthYear.year, monthYear.month],
     queryFn: () => getAppointments(monthYear.year, monthYear.month),
-    select: (data) => selectFn(data, showAll)
+    select: (data) => selectFn(data, showAll),
+    refetchOnWindowFocus: true,
+    ...comonQueryOptions,
   });
 
   return { appointments, monthYear, updateMonthYear, showAll, setShowAll };
