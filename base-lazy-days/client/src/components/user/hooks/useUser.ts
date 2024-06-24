@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 
 import type { User } from "@shared/types";
@@ -22,25 +22,33 @@ async function getUser(userId: number, userToken: string) {
 // 62. Add useQuery call to useUser
 export function useUser() {
 
+  //63. setQueryData and removeQueries
+  const queryClient = useQueryClient();
+
   // Get details on the userId
   const { userId, userToken } = useLoginData();
 
   // Call useQuery to update user data from server
   const { data: user } = useQuery({
-    enabled: !!userId,
+    enabled: !!userId, // executer la requete si userId existe
     queryKey: generateUserKey(userId, userToken),
     queryFn: () => getUser(userId, userToken),
-    staleTime: Infinity,
+    staleTime: Infinity, // les données ne seront jamais refetch jusqu’a expiration du gcTime
   });
 
   // meant to be called from useAuth
   function updateUser(newUser: User): void {
-    // TODO: update the user in the query cache
+    queryClient.setQueryData(
+      generateUserKey(newUser.id, newUser.token),
+      newUser
+    );
   }
 
   // meant to be called from useAuth
   function clearUser() {
-    // TODO: reset user to null in query cache
+    queryClient.removeQueries(
+      { queryKey: [queryKeys.user] }
+    );
   }
 
   return { user, updateUser, clearUser };
