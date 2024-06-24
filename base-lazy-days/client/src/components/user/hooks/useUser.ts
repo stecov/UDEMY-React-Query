@@ -36,7 +36,7 @@ export function useUser() {
     staleTime: Infinity, // les données ne seront jamais refetch jusqu’a expiration du gcTime
   });
 
-  // meant to be called from useAuth
+  // Meant to be called from useAuth for clearing datas from cache
   function updateUser(newUser: User): void {
     queryClient.setQueryData(
       generateUserKey(newUser.id, newUser.token),
@@ -44,10 +44,16 @@ export function useUser() {
     );
   }
 
-  // meant to be called from useAuth
+  // Meant to be called from useAuth for clearing datas from cache
   function clearUser() {
+    // remove user profile data
     queryClient.removeQueries(
       { queryKey: [queryKeys.user] }
+    );
+
+    // remove user appointments data
+    queryClient.removeQueries(
+      { queryKey: [queryKeys.appointments, queryKeys.user] }
     );
   }
 
