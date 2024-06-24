@@ -18,9 +18,6 @@ export function useTreatments(): Treatment[] {
     queryKey: [queryKeys.treatments],
     queryFn: getTreatments,
     // 55. Update Re-Fetch Options
-    staleTime: 600000, // 10 mins
-    gcTime: 900000, // 15 mins (doesnt make sense staleTime exceed gcTime)
-    refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false
   })
@@ -35,7 +32,5 @@ export function usePrefetchTreatments(): void {
   queryClient.prefetchQuery({
     queryKey: [queryKeys.treatments],
     queryFn: getTreatments,
-    staleTime: 600000, // 10 mins
-    gcTime: 900000, // 15 mins (doesnt make sense staleTime exceed gcTime)
   })
 }
