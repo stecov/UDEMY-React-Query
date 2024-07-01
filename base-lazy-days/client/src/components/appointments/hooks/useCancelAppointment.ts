@@ -22,7 +22,7 @@ export function useCancelAppointment() {
   const toast = useCustomToast();
 
   // Mutate function
-  const { mutate } = useMutation({
+  const { mutate: cancelAppointment } = useMutation({
     mutationFn: removeAppointmentUser,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [queryKeys.appointments] });
@@ -32,5 +32,5 @@ export function useCancelAppointment() {
       });
     }
   });
-  return mutate;
+  return cancelAppointment;
 }
