@@ -1,7 +1,8 @@
 import { queryKeys } from "./constants"
 
-export const generateUserKey = (userId: number, userToken: string) => {
-    return [queryKeys.user, userId, userToken];
+export const generateUserKey = (userId: number) => {
+    // deliberately exclude the userToken from the dependency array
+    return [queryKeys.user, userId];
 }
 
 export const generateUserAppointmentsKey = (userId: number, userToken: string) => {
